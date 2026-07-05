@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 
+const authRoutes = require('./routes/authRoutes');
+
 dotenv.config();
 const app = express();
 
@@ -24,10 +26,17 @@ mongoose.connect( process.env.MONGODB_URI).then(() => {
   console.error('Error connecting to MongoDB:', err);
 });
 
+//routes
+app.use('/api/auth', )
+
+
+//test route
 app.get('/', (req, res) => {
     res.send('API is running...');
 })
 
+
+//start the server
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
 });
