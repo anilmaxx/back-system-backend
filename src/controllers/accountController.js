@@ -50,3 +50,17 @@ exports.getMyAccounts = async (req, res) => {
        res.status(500).send('Server Error');
     }
 }
+
+exports.getAccountById = async (req, res) => {
+    try{
+        const account = await Account.findById(req.params.id).populate('user', ['name', 'email']);
+        if (!account) {
+            return res.status(404).json({ msg: 'Account not found' });
+        }
+        res.json(account);
+    } catch (error) {
+        console.error(err.message);
+        
+  }
+    
+}

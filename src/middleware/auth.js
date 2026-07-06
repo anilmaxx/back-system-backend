@@ -13,6 +13,9 @@ const auth = (req, res, next) => {
     try {
         const decoded = jwt.verify(token.replace(/^Bearer\s+/i, ''), process.env.JWT_SECRET);
         req.user = decoded.user || decoded;
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ msg: 'Invalid token payload' });
+        }
         next();
   } catch (err) {
     res.status(401).json({ msg: 'Token is not valid' });
