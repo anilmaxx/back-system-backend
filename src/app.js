@@ -10,6 +10,7 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 //header security
 app.use(helmet());
@@ -27,7 +28,7 @@ mongoose.connect( process.env.MONGODB_URI).then(() => {
 });
 
 //routes
-app.use('/api/auth', )
+app.use('/api/auth', authRoutes)
 
 
 //test route
