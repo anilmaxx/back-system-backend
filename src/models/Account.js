@@ -13,8 +13,9 @@ const AccountSchema = new mongoose.Schema({
     },
     accountType: {
         type: String,
-        enum: ['Savings', 'Current'],
-        required: true
+        enum: ['savings', 'current'],
+        required: true,
+        lowercase: true
     },
     balance:{
         type: Number,
