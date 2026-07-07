@@ -6,4 +6,7 @@ const transactionController = require('../controllers/transactionController');
 
 //POST /api/transactions/deposit = (user)
 router.post('/deposit', auth, transactionController.deposit);
+
+//POST /api/transactions/withdraw = (user)
+router.post('/withdraw', auth, transactionController.withdraw);
 module.exports = router;

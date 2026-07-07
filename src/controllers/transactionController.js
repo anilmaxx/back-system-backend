@@ -10,7 +10,7 @@ exports.deposit = async (req, res) => {
 
         if (amount <= 0) return res.status(400).json({ msg: 'Amount must be greater than 0' });
 
-        const account = await Account.findById({ _id: accountId, user: req.user.id }).session(session);
+        const account = await Account.findOne({ _id: accountId, user: req.user.id }).session(session);
         if (!account) {
             await session.abortTransaction();
             return res.status(404).json({ msg: 'Account not found or unauthorized' });
@@ -42,4 +42,9 @@ exports.deposit = async (req, res) => {
     } finally {
         await session.endSession();
     }
+}
+
+exports.withdraw = async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
 }
