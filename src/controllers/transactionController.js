@@ -164,3 +164,62 @@ exports.transfer = async (req, res) => {
         await session.endSession();
     }
 }
+
+exports.getTransactions = async (req, res) => {
+    try {
+        const { type, startDate, endDate } = req.query; 
+
+        const userAccounts = await Account.find({ user: req.user.id }).select('_id');
+        const accountIds = userAccounts.map(account => account._id);
+
+        let query = {
+            $or: [
+                { fromAccount: { $in: accountIds } },
+                { toAccount: { $in: accountIds } }
+            ]
+        };
+
+        if (startDate || endDate) {
+            query.createdAt = {};
+            if (startDate) query.createdAt.$gte = new Date(startDate);
+            if (endDate) query.createdAt.$lte = new Date(endDate);
+        }
+
+        const transactions = await Transaction.find(query).sort({ createdAt: -1 });
+        res.json(transactions);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+    }
+
+exports.getAllTransactions = async (req, res) => {
+    try {
+        const transactions = await Transaction.find().sort({ createdAt: -1 });
+        res.json(transactions);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+}
+
+exports.getTransactionsByAccountId = async (req, res) => {
+    try{
+        const accountId = req.params.accountId;
+        if (!mongoose.Types.ObjectId.isValid(accountId)) {
+           return res.status(400).json({ msg: 'Invalid Account ID format' });
+        }
+
+        const transactions = await Transaction.find({
+            $or: [
+                { fromAccount: accountId },
+                { toAccount: accountId }
+            ]
+        }).sort({ createdAt: -1 });
+        res.json(transactions);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server Error');
+    }
+}

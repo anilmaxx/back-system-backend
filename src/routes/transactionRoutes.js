@@ -12,4 +12,14 @@ router.post('/withdraw', auth, transactionController.withdraw);
 
 //POST /api/transactions/transfer = (user)
 router.post('/transfer', auth, transactionController.transfer);
+
+//GET /api/transactions/ = (user)
+router.get('/', auth, transactionController.getTransactions);
+
+//GET /api/transactions/all = (admin)
+router.get('/all', auth, admin, transactionController.getAllTransactions);
+
+//GET /api/transactions/accounts/:accountId = (admin)
+router.get('/accounts/:accountId', auth, admin, transactionController.getTransactionsByAccountId);
+
 module.exports = router;
