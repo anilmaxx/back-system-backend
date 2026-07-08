@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const authRoutes = require('./routes/authRoutes');
 const accountRoutes = require('./routes/accountRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
+const userRoutes = require('./routes/userRouter');
 
 dotenv.config();
 const app = express();
@@ -33,6 +34,7 @@ mongoose.connect( process.env.MONGODB_URI).then(() => {
 app.use('/api/auth', authRoutes);
 app.use('/api/account', accountRoutes);
 app.use('/api/transactions', transactionRoutes);
+app.use('/api/users', userRoutes);
 
 
 //test route
